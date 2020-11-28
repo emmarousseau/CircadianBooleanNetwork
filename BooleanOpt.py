@@ -5,6 +5,7 @@ Created on Sat Nov 28 14:07:16 2020
 @author: gogom
 """
 import pandas as pd 
+import numpy as np
 
 class Edge:
     
@@ -35,7 +36,7 @@ def find_thres_var(ls):
     
     maxV = 0
     minV = 0
-    for value in list:
+    for value in ls:
         if value > maxV:
             maxV = value
         if value < minV:
@@ -51,7 +52,8 @@ def find_all_comb(ls):
     minV, var = find_thres_var(ls)
     options = []
     for time in range(3,27,3):
-        for thres in range(minV, minV+10*var, var):
+        thresholds = (minV+i*var for i in range(0, 10))
+        for thres in thresholds:
             options.append((time,thres))
             
     return options
@@ -65,4 +67,6 @@ cry1 = list(data.iloc[0, 1:])
 cry2 = list(data.iloc[1, 1:])
 per1 = list(data.iloc[2, 1:])
 per2 = list(data.iloc[3, 1:])
-        
+
+options = find_all_comb(cry1)
+print(cry1)
