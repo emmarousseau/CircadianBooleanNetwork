@@ -36,7 +36,7 @@ def find_thres_var(ls):
     minV = 0
     for value in list:
         if value > maxV:
-            maxV = value;
+            maxV = value
         if value < minV:
             minV =value
             
