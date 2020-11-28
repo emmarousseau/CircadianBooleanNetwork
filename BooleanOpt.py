@@ -4,6 +4,7 @@ Created on Sat Nov 28 14:07:16 2020
 
 @author: gogom
 """
+import pandas as pd 
 
 class Edge:
     
@@ -60,6 +61,8 @@ data = pd.read_csv("transcriptome_matrix_mouse_liver.csv", sep=";")
 data = data.iloc[[1,1213,45,686]]
 data=data.drop(['BH.Q', 'ADJ.P', 'PER', 'LAG', 'AMP'], axis=1)
   
-
-
+cry1 = list(data.iloc[0, 1:])
+cry2 = list(data.iloc[1, 1:])
+per1 = list(data.iloc[2, 1:])
+per2 = list(data.iloc[3, 1:])
         
