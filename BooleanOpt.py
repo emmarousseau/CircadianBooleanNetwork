@@ -36,5 +36,4 @@ class Node:
 
 data = pd.read_csv("transcriptome_matrix_mouse_liver.csv", sep=";")
 data = data.iloc[[1,1213,45,686]]
-
-print(data)
+data=data.drop(['BH.Q', 'ADJ.P', 'PER', 'LAG', 'AMP'], axis=1)
