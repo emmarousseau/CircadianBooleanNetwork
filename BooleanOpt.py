@@ -3,6 +3,7 @@
 Created on Sat Nov 28 14:07:16 2020
 
 @author: gogom
+
 """
 
 class Edge:
