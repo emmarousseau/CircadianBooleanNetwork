@@ -4,6 +4,7 @@ Created on Sat Nov 28 14:07:16 2020
 
 @author: gogom
 """
+import pandas as pd
 
 class Edge:
     
@@ -18,3 +19,6 @@ class Node:
         
         self.threshold = threshold
         
+
+data = pd.read_csv("https://github.com/emmarousseau/CircadianBooleanNetwork/blob/main/transcriptome_matrix_mouse_liver.csv", error_bad_lines=False)
+print(data.head())
