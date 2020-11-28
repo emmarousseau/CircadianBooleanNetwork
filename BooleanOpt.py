@@ -34,7 +34,7 @@ class Node:
             self.exiting_edges.append(edge)
 
 
-data = pd.read_csv("transcriptome_matrix_mouse_liver.csv", error_bad_lines=False)
-cry1_data = data.iloc[1,0]
+data = pd.read_csv("transcriptome_matrix_mouse_liver.csv", sep=";")
+data = data.iloc[[1,1213,45,686]]
 
-print(type(cry1_data))
+print(data)
