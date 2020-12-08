@@ -6,6 +6,7 @@ Created on Sat Nov 28 14:07:16 2020
 """
 import pandas as pd 
 import numpy as np
+import NetworkClass as NW
 
 class Edge:
     
@@ -70,3 +71,28 @@ per2 = list(data.iloc[3, 1:])
 
 options = find_all_comb(cry1)
 print(cry1)
+
+Cry = NW.Enzyme("Cry")
+Per = NW.Enzyme("Per")
+
+Per_Cry = NW.Reaction(Per,Cry)
+Cry_Per = NW.Reaction(Cry,Per)
+Cry_Cry = NW.Reaction(Cry,Cry)
+
+
+Netw = NW.Network([Per,Cry],[Per_Cry,Cry_Cry,Cry_Per])
+
+LCs, chart = Netw.possibleLCs()
+
+print(LCs)
+print(chart)
+
+a_LC = NW.LC(Netw,LCs[5],chart)
+print(a_LC.gates)
+
+data = {}
+
+data[Cry] = cry1
+data[Per] = per1
+
+models = a_LC.possibleMODELS(data)
