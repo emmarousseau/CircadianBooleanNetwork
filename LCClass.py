@@ -1,5 +1,7 @@
 
 
+import itertools as itert
+
 class LC:
     
     def __init__(self, network, gates, chart):
@@ -66,7 +68,7 @@ class LC:
 
         for comb in all_comb:
             new_dict = {}
-            for name in len(name_list):
+            for name in range(len(name_list)):
                 new_dict[name_list[name]] = comb[name]
             models.append(new_dict)
 
