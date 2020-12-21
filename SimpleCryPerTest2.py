@@ -61,6 +61,7 @@ print(a_cost)
 """
 numbers = []
 costs = []
+all_models = []
 for j in range(len(LCs)):
 
     a_LC = logCon.LC(Netw,LCs[j],chart)
@@ -71,16 +72,22 @@ for j in range(len(LCs)):
     for model in parameters:
         new_model = mod.Model_OPT(a_LC, model, data)
         models.append(new_model)
+        all_models.append(new_model)
 
     for i in range(len(models)):
         numbers.append((j,i+1))
         costs.append(cost.costFunction(models[i]))
 
 
-
+"""
 print(max(costs))
 
-print(costs)
+print(costs.count(32))
+
+print(costs.index(32))
+"""
+selected_model = all_models[costs.index(32)]
+print(selected_model.parameters)
 
 
 
