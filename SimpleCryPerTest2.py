@@ -91,8 +91,8 @@ for i in range(len(costs)):
 
 
 print(good_fits)
-
-visIndex = numbers.index(good_fits[0])
+number = 0
+visIndex = numbers.index(good_fits[number])
 a_model = all_models[visIndex]
 print(a_model.parameters)
 
@@ -114,17 +114,29 @@ for i in range(len(time)):
 cry_act[0] = 5
 cry_act[0] = 5
 
-for j in range(len(time)):
-    for i in range(len(time)):
-        if cry_act[i] == 5:
-            per_act[(i+signal_from_cry)%16] = 0
-        elif cry_act[i] == 0:
-            per_act[(i+signal_from_cry)%16] = 5
-        if per_act[i] == 5:
-            cry_act[(i+signal_from_per)%16] = 0
-        elif per_act[i] == 0:
-            cry_act[(i+signal_from_per)%16] = 5
-    
+if good_fits[number][0] == 0:
+    for j in range(len(time)):
+        for i in range(len(time)):
+            if cry_act[i] == 5:
+                per_act[(i+signal_from_cry)%16] = 0
+            elif cry_act[i] == 0:
+                per_act[(i+signal_from_cry)%16] = 5
+            if per_act[i] == 5:
+                cry_act[(i+signal_from_per)%16] = 0
+            elif per_act[i] == 0:
+                cry_act[(i+signal_from_per)%16] = 5
+
+elif good_fits[number][0] == 3:
+    for j in range(len(time)):
+        for i in range(len(time)):
+            if cry_act[i] == 5:
+                per_act[(i+signal_from_cry)%16] = 0
+            elif cry_act[i] == 0:
+                per_act[(i+signal_from_cry)%16] = 5
+            if per_act[i] == 5:
+                cry_act[(i+signal_from_per)%16] = 0
+            elif per_act[i] == 0:
+                cry_act[(i+signal_from_per)%16] = 5
 
 plt.plot(time,cry_act,c="r")
 plt.plot(time,per_act,c="b")
