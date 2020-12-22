@@ -52,9 +52,6 @@ data[Cry] = cry1
 data[Per] = per1
 
 time = range(1,17)
-plt.plot(time,cry1,c="r")
-plt.plot(time,per1,c="b")
-plt.savefig("pts_graphs.png")
 
 #print("models : ", models[100000])
 
@@ -100,6 +97,7 @@ a_model = all_models[visIndex]
 print(a_model.parameters)
 
 time = range(1,17)
+
 plt.plot(time,cry1,c="r")
 plt.plot(time,per1,c="b")
 
@@ -107,14 +105,26 @@ cry_act = []
 per_act = []
 thres_cry = a_model.parameters[Cry]
 thres_per = a_model.parameters[Per]
+signal_from_cry = a_model.parameters[Cry_Per]
+signal_from_per = a_model.parameters[Per_Cry]
 
 for i in range(len(time)):
-    cry_act.append(0)
-    per_act.append(0)
-    if cry1[i] >= thres_cry:
-        cry_act[i] = 5
-    if per1[i] >= thres_per:
-        per_act[i] = 5
+    cry_act.append(-1)
+    per_act.append(-1)
+cry_act[0] = 5
+cry_act[0] = 5
+
+for j in range(len(time)):
+    for i in range(len(time)):
+        if cry_act[i] == 5:
+            per_act[(i+signal_from_cry)%16] = 0
+        elif cry_act[i] == 0:
+            per_act[(i+signal_from_cry)%16] = 5
+        if per_act[i] == 5:
+            cry_act[(i+signal_from_per)%16] = 0
+        elif per_act[i] == 0:
+            cry_act[(i+signal_from_per)%16] = 5
+    
 
 plt.plot(time,cry_act,c="r")
 plt.plot(time,per_act,c="b")
