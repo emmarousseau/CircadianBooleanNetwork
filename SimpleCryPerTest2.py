@@ -13,6 +13,7 @@ import costFunction as cost
 import NodeClass as node
 import pandas as pd 
 import numpy as np
+import matplotlib.pyplot as plt
 
 data = pd.read_csv("transcriptome_matrix_mouse_liver.csv", sep=";")
 data = data.iloc[[1,1213,45,686]]
@@ -22,6 +23,8 @@ cry1 = list(data.iloc[0, 1:])
 cry2 = list(data.iloc[1, 1:])
 per1 = list(data.iloc[2, 1:])
 per2 = list(data.iloc[3, 1:])
+
+
 
 #print(cry1)
 #print(per1)
@@ -48,6 +51,10 @@ data = {}
 data[Cry] = cry1
 data[Per] = per1
 
+time = range(1,17)
+plt.plot(time,cry1,c="r")
+plt.plot(time,per1,c="b")
+plt.savefig("pts_graphs.png")
 
 #print("models : ", models[100000])
 
@@ -59,6 +66,7 @@ a_cost = cost.costFunction(a_model)
 print(a_cost)
 
 """
+
 numbers = []
 costs = []
 all_models = []
@@ -70,7 +78,7 @@ for j in range(len(LCs)):
     models = []
 
     for model in parameters:
-        new_model = mod.Model_OPT(a_LC, model, data)
+        new_model = mod.Model_OPT(a_LC, model, data) 
         models.append(new_model)
         all_models.append(new_model)
 
@@ -79,15 +87,41 @@ for j in range(len(LCs)):
         costs.append(cost.costFunction(models[i]))
 
 
-"""
-print(max(costs))
+good_fits = []
+for i in range(len(costs)):
+    if costs[i] == 32:
+        good_fits.append(numbers[i])
 
-print(costs.count(32))
 
-print(costs.index(32))
-"""
-selected_model = all_models[costs.index(32)]
-print(selected_model.parameters)
+print(good_fits)
+
+visIndex = numbers.index(good_fits[0])
+a_model = all_models[visIndex]
+print(a_model.parameters)
+
+time = range(1,17)
+plt.plot(time,cry1,c="r")
+plt.plot(time,per1,c="b")
+
+cry_act = []
+per_act = []
+thres_cry = a_model.parameters[Cry]
+thres_per = a_model.parameters[Per]
+
+for i in range(len(time)):
+    cry_act.append(0)
+    per_act.append(0)
+    if cry1[i] >= thres_cry:
+        cry_act[i] = 5
+    if per1[i] >= thres_per:
+        per_act[i] = 5
+
+plt.plot(time,cry_act,c="r")
+plt.plot(time,per_act,c="b")
+
+
+plt.savefig("pts_graphs.png")
+
 
 
 

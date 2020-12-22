@@ -29,7 +29,8 @@ def costFunction(Model):
                             downstream_act.append(1)
                         else:
                             downstream_act.append(0)
-                    local_cost = correlation1on1(upstream_act, downstream_act, delay)
+                    edgeType = Model.LC.gates[edge]
+                    local_cost = correlation1on1(upstream_act, downstream_act, delay, edgeType)
 
                 elif len(node2.inward) == 2:
                     other_up_node = node2.inward[0].node1
@@ -41,6 +42,8 @@ def costFunction(Model):
                         cleared_edges.append(other_edge)
                     delay2 = Model.parameters[other_edge]
                     gate = Model.LC.gates[node2]
+                    edgeType1 = Model.LC.gates[edge]
+                    edgeType2 = Model.LC.gates[other_edge]
                     other_thres = Model.parameters[other_up_node]
                     other_node_act = []
                     for r_value in Model.data[other_up_node]:
@@ -49,7 +52,7 @@ def costFunction(Model):
                         else:
                             other_node_act.append(0) 
 
-                    local_cost = correlation2on1(upstream_act,other_node_act,downstream_act, gate, delay, delay2)
+                    local_cost = correlation2on1(upstream_act,other_node_act,downstream_act, gate, delay, delay2, edgeType1, edgeType2)
 
                 
 
@@ -57,14 +60,19 @@ def costFunction(Model):
 
     return total_cost
 
-def correlation1on1(up, down, delay):
+def correlation1on1(up, down, delay, edge):
     downstream_effect = []
     cost = 0
     for i in range(len(up)):
         downstream_effect.append(0)
-    for i in range(len(up)):
-        if up[i] == 1:
-            downstream_effect[(i+delay)%16] = 1
+    if edge == "INV":
+        for i in range(len(up)):
+            if up[i] == 0:
+                downstream_effect[(i+delay)%16] = 1
+    elif edge == "ID":
+         for i in range(len(up)):
+            if up[i] == 1:
+                downstream_effect[(i+delay)%16] = 1
 
     for value1, value2 in zip(down,downstream_effect):
         if value1 == value2:
@@ -72,7 +80,7 @@ def correlation1on1(up, down, delay):
     
     return cost
 
-def correlation2on1(up1,up2,down, gate, delay1, delay2):
+def correlation2on1(up1,up2,down, gate, delay1, delay2, edge1, edge2):
     
     downstream_effect = []
     for i in range(len(up1)):

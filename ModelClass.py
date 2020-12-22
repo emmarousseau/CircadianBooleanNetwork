@@ -6,6 +6,5 @@ class Model_OPT:
         self.LC = LC
         self.parameters = parameters
         self.network = self.LC.network
-        self.data = data
-        
+        self.data = data        
         
