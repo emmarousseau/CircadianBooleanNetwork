@@ -112,10 +112,10 @@ for i in range(len(time)):
     cry_act.append(-1)
     per_act.append(-1)
 cry_act[0] = 5
-cry_act[0] = 5
+per_act[0] = 0
 
 if good_fits[number][0] == 0:
-    for j in range(len(time)):
+    for j in range(len(time)*2):
         for i in range(len(time)):
             if cry_act[i] == 5:
                 per_act[(i+signal_from_cry)%16] = 0
@@ -127,7 +127,7 @@ if good_fits[number][0] == 0:
                 cry_act[(i+signal_from_per)%16] = 5
 
 elif good_fits[number][0] == 3:
-    for j in range(len(time)):
+    for j in range(len(time)*2):
         for i in range(len(time)):
             if cry_act[i] == 5:
                 per_act[(i+signal_from_cry)%16] = 0
