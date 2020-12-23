@@ -34,19 +34,49 @@ data[Cry] = cry1
 data[Per] = per1
 data[Bmal] = bmal
 
-Per_Cry = edge.Reaction(Per,Cry)
-Cry_Per = edge.Reaction(Cry,Per)
+#Per_Cry = edge.Reaction(Per,Cry)
+#Cry_Per = edge.Reaction(Cry,Per)
 Bmal_Cry = edge.Reaction(Bmal, Cry)
 Bmal_Per = edge.Reaction(Bmal, Per)
 Per_Bmal = edge.Reaction(Per, Bmal)
 Cry_Bmal = edge.Reaction(Cry, Bmal)
 
-Netw = net.Network([Per,Cry, Bmal],[Per_Cry,Cry_Per, Bmal_Cry, Bmal_Per, Per_Bmal, Cry_Bmal])
+Netw = net.Network([Per,Cry, Bmal],[Bmal_Cry, Bmal_Per, Per_Bmal, Cry_Bmal])
 
 print(Netw.nodes)
 print(Netw.edges)
+print(len(bmal))
+print(bmal)
+
 
 LCs, chart = Netw.possibleLCs()
+original = [0,0,1,1,1]
+
+cleaned_LCs = []
+for LC in LCs:
+    if isSimilar(original,LC):
+        cleaned_LCs.append(LC)
+
+print(len(LCs))
+print(len(cleaned_LCs))
+
+
+for i in range(len(LCs)):
+    a_LC = logCon.LC(Netw,LCs[i],chart, i)
+    parameters = a_LC.possibleMODELS(data)
+    print(len(parameters))
+    break
+
+
+def isSimilar(original, test):
+    count = 0
+    for i,j in zip(original,test):
+        if i==j:
+            count+=1
+    if count <3:
+        return False
+    else:
+        return True
 
     
 
