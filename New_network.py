@@ -4,7 +4,7 @@ import NetworkClass as net
 import ModelClass as mod
 import LCClass as logCon
 import EdgeClass as edge
-import costFunction as cost
+import new_cost_function as cost
 import NodeClass as node
 import pandas as pd 
 import numpy as np
@@ -67,9 +67,6 @@ for LC in LCs:
     if isSimilar(original,LC):
         cleaned_LCs.append(LC)
 
-print(len(LCs))
-print(len(cleaned_LCs))
-
 a_LC = logCon.LC(Netw,cleaned_LCs[0],chart, 0)
 parameters = a_LC.possibleMODELS(data)
 print(len(parameters))
@@ -82,13 +79,13 @@ for i in range(len(cleaned_LCs)):
 
     for par in parameters:
         a_model = mod.Model_OPT(a_LC, par, data) 
-        cost = costFunction(a_model)
-        costs.append(cost)
+        a_cost = cost.costFunction(a_model)[3]
+        costs.append(a_cost)
     costs.sort()
     for c in costs[(len(costs)-10):(len(costs)-1)]:
         imp_costs.append(c)
 
-print(costs)
+print(imp_costs)
 
 
 

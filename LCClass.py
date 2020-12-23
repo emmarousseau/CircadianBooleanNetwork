@@ -71,6 +71,7 @@ class LC:
             new_dict = {}
             for name in range(len(name_list)):
                 new_dict[name_list[name]] = comb[name]
-            models.append(new_dict)
+            if len(models) < 5:
+                models.append(new_dict)
 
         return models

@@ -41,12 +41,12 @@ def costFunction(Model):
     else:
         bmal_act[0] = 0
 
-    LC = Model.LC
-    P_B = LC[0]
-    C_B = LC[1]
-    B_C = LC[2]
-    B_P = LC[3]
-    BMALgate = LC[5]
+    LC = Model.LC.gates
+    P_B = LC[Model.network.edges[2]]
+    C_B = LC[Model.network.edges[3]]
+    B_C = LC[Model.network.edges[0]]
+    B_P = LC[Model.network.edges[1]]
+    BMALgate = LC[Model.network.nodes[2]]
 
     for i in range(len(time)*2):
         for j in range(len(time)):
@@ -122,7 +122,7 @@ def costFunction(Model):
     for value1, value2 in zip(Model.data[Model.network.nodes[0]], per_act):
         newcost2 += abs(value1-value2)
 
-    for value1, value2 in zip(Model.data[Model.network.nodes[2]], bmal_act)
-        newcost3 += abs(value1-values2)
+    for value1, value2 in zip(Model.data[Model.network.nodes[2]], bmal_act):
+        newcost3 += abs(value1-value2)
 
     return cry_act, per_act, bmal_act, (newcost1+newcost2+newcost3)/3.0
