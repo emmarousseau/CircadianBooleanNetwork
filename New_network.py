@@ -74,6 +74,28 @@ a_LC = logCon.LC(Netw,cleaned_LCs[0],chart, 0)
 parameters = a_LC.possibleMODELS(data)
 print(len(parameters))
 
+imp_costs = []
+
+for i in range(len(cleaned_LCs)):
+    costs = []
+    a_LC = logCon.LC(Netw,cleaned_LCs[i],chart, i)
+
+    for par in parameters:
+        a_model = mod.Model_OPT(a_LC, par, data) 
+        cost = costFunction(a_model)
+        costs.append(cost)
+    costs.sort()
+    for c in costs[(len(costs)-10):(len(costs)-1)]:
+        imp_costs.append(c)
+
+print(costs)
+
+
+
+
+
+
+
 
 
 
