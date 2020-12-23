@@ -22,9 +22,9 @@ def costFunction(Model):
     signal_cry_bmal = Model.parameters[Model.network.edges[3]]
 
     for i in range(len(time)):
-        cry_act.append(0)
-        per_act.append(0)
-        bmal_act.append(0)
+        cry_act.append(-1)
+        per_act.append(-1)
+        bmal_act.append(-1)
 
     if Model.data[Model.network.nodes[1]][0] >= thres_cry:
         cry_act[0] = 17
@@ -48,35 +48,54 @@ def costFunction(Model):
     B_P = LC[3]
     BMALgate = LC[5]
 
-     for i in range(len(time)*2):
-         for j in range(len(time)):
+    for i in range(len(time)*2):
+        for j in range(len(time)):
             if BMALgate == "AND":
-                if P_B == "ID" and C_B == "ID":
-                    if cry_act[(i-signal_cry_bmal)%16] == 17 and per_act[(i-signal_per_bmal)%16] == 12:
-                            bmal_act[i] = 3
+                elif P_B == "ID" and C_B == "ID":
+                    if cry_act[(j-signal_cry_bmal)%16] == 17 and per_act[(j-signal_per_bmal)%16] == 12:
+                        bmal_act[i] = 3
+                    else:
+                        bmal_act[i] = 0
                 elif P_B == "INV" and C_B == "ID":
-                    elif cry_act[(i-signal_cry_bmal)%16] == 0 and per_act[(i-signal_per_bmal)%16] == 12:
+                    if cry_act[(j-signal_cry_bmal)%16] == 0 and per_act[(j-signal_per_bmal)%16] == 12:
                             bmal_act[i] = 3
+                    else:
+                        bmal_act[i] = 0
                 elif P_B == "ID" and C_B == "INV":
-                    elif cry_act[(i-signal_cry_bmal)%16] == 17 and per_act[(i-signal_per_bmal)%16] == 0:
-                            bmal_act[i] = 3
+                    if cry_act[(j-signal_cry_bmal)%16] == 17 and per_act[(j-signal_per_bmal)%16] == 0:
+                        bmal_act[i] = 3
+                    else:
+                        bmal_act[i] = 0
                 elif P_B == "INV" and C_B == "INV":
-                    elif cry_act[(i-signal_cry_bmal)%16] == 0 and per_act[(i-signal_per_bmal)%16] == 0:
-                            bmal_act[i] = 3
-
+                    if cry_act[(j-signal_cry_bmal)%16] == 0 and per_act[(j-signal_per_bmal)%16] == 0:
+                        bmal_act[i] = 3
+                    else:
+                        bmal_act[i] = 0
             elif BMALgate == "OR":
                 if P_B == "ID" and C_B == "ID":
-                    if cry_act[(i-signal_cry_bmal)%16] == 17 or per_act[(i-signal_per_bmal)%16] == 12:
-                            bmal_act[i] = 3
+                    if cry_act[(j-signal_cry_bmal)%16] == 17 or per_act[(j-signal_per_bmal)%16] == 12:
+                        bmal_act[i] = 3
+                    else:
+                        bmal_act[i] = 0
                 elif P_B == "INV" and C_B == "ID":
-                    elif cry_act[(i-signal_cry_bmal)%16] == 0 or per_act[(i-signal_per_bmal)%16] == 12:
-                            bmal_act[i] = 3
+                    if cry_act[(j-signal_cry_bmal)%16] == 0 or per_act[(j-signal_per_bmal)%16] == 12:
+                        bmal_act[i] = 3
+                    else:
+                        bmal_act[i] = 0
                 elif P_B == "ID" and C_B == "INV":
-                    elif cry_act[(i-signal_cry_bmal)%16] == 17 or per_act[(i-signal_per_bmal)%16] == 0:
-                            bmal_act[i] = 3
+                    if cry_act[(j-signal_cry_bmal)%16] == 17 or per_act[(j-signal_per_bmal)%16] == 0:
+                        bmal_act[i] = 3
+                    else:
+                        bmal_act[i] = 0
                 elif P_B == "INV" and C_B == "INV":
-                    elif cry_act[(i-signal_cry_bmal)%16] == 0 or per_act[(i-signal_per_bmal)%16] == 0:
-                            bmal_act[i] = 3
+                    if cry_act[(j-signal_cry_bmal)%16] == 0 or per_act[(j-signal_per_bmal)%16] == 0:
+                        bmal_act[i] = 3
+                    else:
+                        bmal_act[i] = 0
+
+
+            
+
 
 
     
