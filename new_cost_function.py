@@ -17,14 +17,14 @@ def costFunction(Model):
     thres_per = Model.parameters[Model.network.nodes[0]]
     thres_bmal = Model.parameters[Model.network.nodes[2]]
     signal_bmal_cry = Model.parameters[Model.network.edges[0]]
-    signal_bmal-per = Model.parameters[Model.network.edges[1]]
-    signal_per-bmal = Model.parameters[Model.network.edges[2]]
+    signal_bmal_per = Model.parameters[Model.network.edges[1]]
+    signal_per_bmal = Model.parameters[Model.network.edges[2]]
     signal_cry_bmal = Model.parameters[Model.network.edges[3]]
 
     for i in range(len(time)):
-        cry_act.append(-1)
-        per_act.append(-1)
-        bmal_act.append(-1)
+        cry_act.append(0)
+        per_act.append(0)
+        bmal_act.append(0)
 
     if Model.data[Model.network.nodes[1]][0] >= thres_cry:
         cry_act[0] = 17
@@ -41,55 +41,45 @@ def costFunction(Model):
     else:
         bmal_act[0] = 0
 
+    LC = Model.LC
+    P_B = LC[0]
+    C_B = LC[1]
+    B_C = LC[2]
+    B_P = LC[3]
+    BMALgate = LC[5]
 
-    if Model.LC.number == 0:
-        for j in range(len(time)*2):
-            for i in range(len(time)):
-                if cry_act[i] == 17:
-                    per_act[(i+signal_from_cry)%16] = 0
-                elif cry_act[i] == 0:
-                    per_act[(i+signal_from_cry)%16] = 12
-                if per_act[i] == 12:
-                    cry_act[(i+signal_from_per)%16] = 0
-                elif per_act[i] == 0:
-                    cry_act[(i+signal_from_per)%16] = 17
+     for i in range(len(time)*2):
+         for j in range(len(time)):
+            if BMALgate == "AND":
+                if P_B == "ID" and C_B == "ID":
+                    if cry_act[(i-signal_cry_bmal)%16] == 17 and per_act[(i-signal_per_bmal)%16] == 12:
+                            bmal_act[i] = 3
+                elif P_B == "INV" and C_B == "ID":
+                    elif cry_act[(i-signal_cry_bmal)%16] == 0 and per_act[(i-signal_per_bmal)%16] == 12:
+                            bmal_act[i] = 3
+                elif P_B == "ID" and C_B == "INV":
+                    elif cry_act[(i-signal_cry_bmal)%16] == 17 and per_act[(i-signal_per_bmal)%16] == 0:
+                            bmal_act[i] = 3
+                elif P_B == "INV" and C_B == "INV":
+                    elif cry_act[(i-signal_cry_bmal)%16] == 0 and per_act[(i-signal_per_bmal)%16] == 0:
+                            bmal_act[i] = 3
 
-    elif Model.LC.number == 1:
-        for j in range(len(time)*2):
-            for i in range(len(time)):
-                if cry_act[i] == 17:
-                    per_act[(i+signal_from_cry)%16] = 12
-                elif cry_act[i] == 0:
-                    per_act[(i+signal_from_cry)%16] = 0
-                if per_act[i] == 12:
-                    cry_act[(i+signal_from_per)%16] = 0
-                elif per_act[i] == 0:
-                    cry_act[(i+signal_from_per)%16] = 17
+            elif BMALgate == "OR":
+                if P_B == "ID" and C_B == "ID":
+                    if cry_act[(i-signal_cry_bmal)%16] == 17 or per_act[(i-signal_per_bmal)%16] == 12:
+                            bmal_act[i] = 3
+                elif P_B == "INV" and C_B == "ID":
+                    elif cry_act[(i-signal_cry_bmal)%16] == 0 or per_act[(i-signal_per_bmal)%16] == 12:
+                            bmal_act[i] = 3
+                elif P_B == "ID" and C_B == "INV":
+                    elif cry_act[(i-signal_cry_bmal)%16] == 17 or per_act[(i-signal_per_bmal)%16] == 0:
+                            bmal_act[i] = 3
+                elif P_B == "INV" and C_B == "INV":
+                    elif cry_act[(i-signal_cry_bmal)%16] == 0 or per_act[(i-signal_per_bmal)%16] == 0:
+                            bmal_act[i] = 3
 
-    elif Model.LC.number == 2:
-        for j in range(len(time)*2):
-            for i in range(len(time)):
-                if cry_act[i] == 17:
-                    per_act[(i+signal_from_cry)%16] = 0
-                elif cry_act[i] == 0:
-                    per_act[(i+signal_from_cry)%16] = 12
-                if per_act[i] == 12:
-                    cry_act[(i+signal_from_per)%16] = 17
-                elif per_act[i] == 0:
-                    cry_act[(i+signal_from_per)%16] = 0
 
-    elif Model.LC.number == 3:
-        for j in range(len(time)*2):
-            for i in range(len(time)):
-                if cry_act[i] == 17:
-                    per_act[(i+signal_from_cry)%16] = 12
-                elif cry_act[i] == 0:
-                    per_act[(i+signal_from_cry)%16] = 0
-                if per_act[i] == 12:
-                    cry_act[(i+signal_from_per)%16] = 17
-                elif per_act[i] == 0:
-                    cry_act[(i+signal_from_per)%16] = 0
-
+    
     
     for value1, value2 in zip(Model.data[Model.network.nodes[1]], cry_act):
         newcost1 += abs(value1-value2)
