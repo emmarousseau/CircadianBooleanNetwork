@@ -10,6 +10,16 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+def isSimilar(original, test):
+    count = 0
+    for i,j in zip(original,test):
+        if i==j:
+            count += 1
+    if count <3:
+        return False
+    else:
+        return True
+
 data = pd.read_csv("transcriptome_matrix_mouse_liver.csv", sep=";")
 data = data.iloc[[1,1213,45,686]]
 data=data.drop(['BH.Q', 'ADJ.P', 'PER', 'LAG', 'AMP'], 1)
@@ -48,15 +58,6 @@ print(Netw.edges)
 print(len(bmal))
 print(bmal)
 
-def isSimilar(original, test):
-    count = 0
-    for i,j in zip(original,test):
-        if i==j:
-            count+=1
-    if count <3:
-        return False
-    else:
-        return True
 
 LCs, chart = Netw.possibleLCs()
 original = [0,0,1,1,1]
@@ -69,11 +70,26 @@ for LC in LCs:
 print(len(LCs))
 print(len(cleaned_LCs))
 
-
-
-a_LC = logCon.LC(Netw,LCs[0],chart, 0)
+a_LC = logCon.LC(Netw,cleaned_LCs[0],chart, 0)
 parameters = a_LC.possibleMODELS(data)
 print(len(parameters))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
