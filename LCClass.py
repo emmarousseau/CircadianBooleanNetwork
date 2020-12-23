@@ -4,12 +4,13 @@ import itertools as itert
 
 class LC:
     
-    def __init__(self, network, gates, chart):
+    def __init__(self, network, gates, chart, number):
         
         self.gates = {}
         self.network = network
         self.chart = chart
-        
+        self.number = number
+
         abs_count = 0
 
         for node in network.nodes:

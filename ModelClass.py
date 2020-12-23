@@ -6,5 +6,8 @@ class Model_OPT:
         self.LC = LC
         self.parameters = parameters
         self.network = self.LC.network
-        self.data = data        
+        self.data = data
+
+    def __lt__(self, other):
+        return True
         

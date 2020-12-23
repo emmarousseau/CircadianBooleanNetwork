@@ -26,9 +26,6 @@ per2 = list(data.iloc[3, 1:])
 
 
 
-#print(cry1)
-#print(per1)
-
 Cry = node.Enzyme("Cry")
 Per = node.Enzyme("Per")
 
@@ -53,23 +50,12 @@ data[Per] = per1
 
 time = range(1,17)
 
-#print("models : ", models[100000])
-
-"""
-a_model = mod.Model_OPT(a_LC, models[], data)
-#print(a_model.LC.gates)
-
-a_cost = cost.costFunction(a_model)
-print(a_cost)
-
-"""
-
 numbers = []
 costs = []
 all_models = []
 for j in range(len(LCs)):
 
-    a_LC = logCon.LC(Netw,LCs[j],chart)
+    a_LC = logCon.LC(Netw,LCs[j],chart, j)
 
     parameters = a_LC.possibleMODELS(data)
     models = []
@@ -81,90 +67,30 @@ for j in range(len(LCs)):
 
     for i in range(len(models)):
         numbers.append((j,i+1))
-        costs.append(cost.costFunction(models[i]))
+        decoy1, decoy2, model_cost = cost.costFunction(models[i])
+        costs.append(model_cost)
 
 
 good_fits = []
-for i in range(len(costs)):
-    if costs[i] == 32:
-        good_fits.append(numbers[i])
+costs, all_models = (list(t) for t in zip(*sorted(zip(costs, all_models))))
 
 
-print(good_fits)
 number = 0
-visIndex = numbers.index(good_fits[number])
-a_model = all_models[visIndex]
-print(a_model.parameters)
+visIndex = numbers.index(numbers[number])
+a_model = all_models[0]
 
-time = range(1,17)
+print(a_model.LC.number)
+
 
 plt.plot(time,cry1,c="r")
 plt.plot(time,per1,c="b")
 
-cry_act = []
-per_act = []
-thres_cry = a_model.parameters[Cry]
-thres_per = a_model.parameters[Per]
-signal_from_cry = a_model.parameters[Cry_Per]
-signal_from_per = a_model.parameters[Per_Cry]
 
-for i in range(len(time)):
-    cry_act.append(-1)
-    per_act.append(-1)
-
-if cry1[0] >= thres_cry:
-    cry_act[0] = 5
-else:
-    cry_act[0] = 0
-
-if per1[0] >= thres_per:
-    per_act[0] = 5
-else:
-    per_act[0] = 0
-
-print(cry_act)
-print(per_act)
-
-if good_fits[number][0] == 0:
-    for j in range(len(time)*2):
-        for i in range(len(time)):
-            if cry_act[i] == 5:
-                per_act[(i+signal_from_cry)%16] = 0
-            elif cry_act[i] == 0:
-                per_act[(i+signal_from_cry)%16] = 5
-            if per_act[i] == 5:
-                cry_act[(i+signal_from_per)%16] = 0
-            elif per_act[i] == 0:
-                cry_act[(i+signal_from_per)%16] = 5
-
-elif good_fits[number][0] == 3:
-    for j in range(len(time)*2):
-        for i in range(len(time)):
-            if cry_act[i] == 5:
-                per_act[(i+signal_from_cry)%16] = 5
-            elif cry_act[i] == 0:
-                per_act[(i+signal_from_cry)%16] = 0
-            if per_act[i] == 5:
-                cry_act[(i+signal_from_per)%16] = 5
-            elif per_act[i] == 0:
-                cry_act[(i+signal_from_per)%16] = 0
-
+cry_act, per_act, model_cost = cost.costFunction(a_model)
 plt.plot(time,cry_act,c="r")
 plt.plot(time,per_act,c="b")
 
 
+
+
 plt.savefig("pts_graphs.png")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
