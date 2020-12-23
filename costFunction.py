@@ -17,7 +17,7 @@ def costFunction(Model):
                 upstream_act.append(1)
             else:
                 upstream_act.append(0)
-        
+
         for edge in node.outward:
              if edge not in cleared_edges:       
                 delay = Model.parameters[edge]
