@@ -82,8 +82,8 @@ a_model = all_models[0]
 print(a_model.LC.number)
 
 
-plt.plot(time,cry1,c="r")
-plt.plot(time,per1,c="b")
+plt.plot(time,cry1,c='tab:pink')
+plt.plot(time,per1,c='tab:cyan')
 
 
 cry_act, per_act, model_cost = cost.costFunction(a_model)
