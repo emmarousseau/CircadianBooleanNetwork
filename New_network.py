@@ -48,6 +48,15 @@ print(Netw.edges)
 print(len(bmal))
 print(bmal)
 
+def isSimilar(original, test):
+    count = 0
+    for i,j in zip(original,test):
+        if i==j:
+            count+=1
+    if count <3:
+        return False
+    else:
+        return True
 
 LCs, chart = Netw.possibleLCs()
 original = [0,0,1,1,1]
@@ -61,22 +70,14 @@ print(len(LCs))
 print(len(cleaned_LCs))
 
 
-for i in range(len(LCs)):
-    a_LC = logCon.LC(Netw,LCs[i],chart, i)
-    parameters = a_LC.possibleMODELS(data)
-    print(len(parameters))
-    break
+
+a_LC = logCon.LC(Netw,LCs[0],chart, 0)
+parameters = a_LC.possibleMODELS(data)
+print(len(parameters))
 
 
-def isSimilar(original, test):
-    count = 0
-    for i,j in zip(original,test):
-        if i==j:
-            count+=1
-    if count <3:
-        return False
-    else:
-        return True
+
+
 
     
 
