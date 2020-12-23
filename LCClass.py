@@ -40,7 +40,7 @@ class LC:
             new_list = []
             for elem in unique_values:
                 new_list.append(elem)
-            thresholds[node] = new_list
+            thresholds[node] = [new_list[x] for x in range(0,(len(new_list)//2),2)]
 
         new_ls = []        
         for i in range(1,9):
@@ -71,7 +71,7 @@ class LC:
             new_dict = {}
             for name in range(len(name_list)):
                 new_dict[name_list[name]] = comb[name]
-            if len(models) < 5:
-                models.append(new_dict)
+            #if len(models) < 5:
+            models.append(new_dict)
 
         return models
